@@ -3,6 +3,7 @@ import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
+import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs'
 
 import {
   Card,
@@ -54,13 +55,27 @@ function SubmitButton() {
   const { pending } = useFormStatus()
   return (
     <>
-      <Button
-        size='sm'
-        type='submit'
-        className={cn('mt-3 w-full rounded-lg', pending && 'animate-pulse')}
-      >
-        {pending ? 'Working on it...' : 'Submit'}
-      </Button>
+      <SignedIn>
+        <Button
+          size='sm'
+          type='submit'
+          className={cn('mt-3 w-full rounded-lg', pending && 'animate-pulse')}
+        >
+          {pending ? 'Working on it...' : 'Submit'}
+        </Button>
+      </SignedIn>
+      <SignedOut>
+        <SignInButton mode='modal'>
+          <Button
+            size='sm'
+            type='button'
+            variant='secondary'
+            className='mt-3 w-full rounded-lg'
+          >
+            Sign in to start
+          </Button>
+        </SignInButton>
+      </SignedOut>
     </>
   )
 }
